@@ -35,11 +35,26 @@ function viewAllRoles() {
 
 function viewAllEmployees() {
   connection.query(
-    { sql: "SELECT * FROM employee", rowsAsArray: true },
-    (err, results) => {
+    {
+      sql: `SELECT e.id, e.first_name, e.last_name, r.title, d.name, r.salary, CONCAT(m.first_name , ' ' , m.last_name) AS manager_name
+      FROM employee e 
+      LEFT JOIN roles r ON r.id = e.role_id 
+      LEFT JOIN department d ON d.id = r.department_id 
+      LEFT JOIN employee m ON m.id = e.manager_id`,
+      rowsAsArray: true,
+    },
+    (err, employees) => {
       if (err) throw err;
-
-      console.log(table(results));
+      employees.unshift([
+        "ID",
+        "First Name",
+        "Last Name",
+        "Title",
+        "Department",
+        "Salary",
+        "Manager",
+      ]);
+      console.log(table(employees));
       mainMenu();
     }
   );
@@ -232,12 +247,12 @@ function mainMenu() {
         name: "action",
         message: "What would you like to do?",
         choices: [
-          "View all departments",
-          "View all roles",
+          "Add an employee",
           "View all employees",
           "Add a department",
+          "View all departments",
+          "View all roles",
           "Add a role",
-          "Add an employee",
           "Update an employee role",
           "Exit",
         ],
