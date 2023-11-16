@@ -2,6 +2,17 @@
 
 For all of your employment tracking needs. Macro Manager organizes your company with its database to keep track of your departments, roles and employees. With Macro Manager's intuitive console commands, your tracking troubles will be a thing of the past.
 
+```bash
+___  ___                           ___  ___
+|  \/  |                           |  \/  |
+| .  . |  __ _   ___  _ __   ___   | .  . |  __ _  _ __    __ _   __ _   ___  _ __
+| |\/| | / _` | / __|| '__| / _ \  | |\/| | / _` || '_ \  / _` | / _` | / _ \| '__|
+| |  | || (_| || (__ | |   | (_) | | |  | || (_| || | | || (_| || (_| ||  __/| |
+\_|  |_/ \__,_| \___||_|    \___/  \_|  |_/ \__,_||_| |_| \__,_| \__, | \___||_|
+                                                                  __/ |
+                                                                 |___/
+```
+
 ## Table of Contents
 
 1. [Installation](#installation)
