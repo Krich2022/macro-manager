@@ -1,6 +1,7 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 const { table } = require("table");
+const ascii = require("ascii-art");
 
 const connection = mysql.createPool({
   host: "localhost",
@@ -238,10 +239,25 @@ function updateEmployeeRole() {
       });
   });
 }
+async function generateTitle() {
+  const titleText = "Macro Manager";
 
-function mainMenu() {
-  inquirer
-    .prompt([
+  return new Promise((resolve, reject) => {
+    ascii.font(titleText, "doom", (err, rendered) => {
+      if (err) {
+        reject(err);
+      } else {
+        console.log(rendered);
+        resolve();
+      }
+    });
+  });
+}
+
+async function mainMenu() {
+  try {
+    await generateTitle();
+    const answers = await inquirer.prompt([
       {
         type: "list",
         name: "action",
@@ -257,39 +273,41 @@ function mainMenu() {
           "Exit",
         ],
       },
-    ])
-    .then((answers) => {
-      switch (answers.action) {
-        case "View all departments":
-          viewAllDepartments();
-          break;
-        case "View all roles":
-          viewAllRoles();
-          break;
-        case "View all employees":
-          viewAllEmployees();
-          break;
-        case "Add a department":
-          addDepartment();
-          break;
-        case "Add a role":
-          addRole();
-          break;
-        case "Add an employee":
-          addEmployee();
-          break;
-        case "Update an employee role":
-          updateEmployeeRole();
-          break;
-        case "Exit":
-          connection.end();
-          console.log("Goodbye!");
-          break;
-        default:
-          console.log("Invalid choice. Please try again.");
-          mainMenu();
-      }
-    });
+    ]);
+
+    switch (answers.action) {
+      case "View all departments":
+        viewAllDepartments();
+        break;
+      case "View all roles":
+        viewAllRoles();
+        break;
+      case "View all employees":
+        viewAllEmployees();
+        break;
+      case "Add a department":
+        addDepartment();
+        break;
+      case "Add a role":
+        addRole();
+        break;
+      case "Add an employee":
+        addEmployee();
+        break;
+      case "Update an employee role":
+        updateEmployeeRole();
+        break;
+      case "Exit":
+        connection.end();
+        console.log("Goodbye!");
+        break;
+      default:
+        console.log("Invalid choice. Please try again.");
+        mainMenu();
+    }
+  } catch (error) {
+    console.error("An error occurred:", error);
+  }
 }
 
 mainMenu();
