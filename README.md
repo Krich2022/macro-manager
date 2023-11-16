@@ -33,7 +33,7 @@ npm i
 
 ## Usage
 
-After you install the dependancies use node to start the application. Here is a walkthrough video if you need additional help
+After you install the dependancies use node to start the application. Here is a [walkthrough video](https://drive.google.com/file/d/1pMYPQ0RR6_OAlsxO-SpmHH1aI34XUoh6/view) if you need additional help
 
 ### Repository
 
