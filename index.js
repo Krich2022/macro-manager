@@ -249,6 +249,11 @@ async function generateTitle() {
       } else {
         console.log(rendered);
         resolve();
+        try {
+          mainMenu();
+        } catch (error) {
+          console.error("An error occurred in mainMenu:", error);
+        }
       }
     });
   });
@@ -256,19 +261,18 @@ async function generateTitle() {
 
 async function mainMenu() {
   try {
-    await generateTitle();
     const answers = await inquirer.prompt([
       {
         type: "list",
         name: "action",
         message: "What would you like to do?",
         choices: [
-          "Add an employee",
-          "View all employees",
           "Add a department",
           "View all departments",
-          "View all roles",
           "Add a role",
+          "View all roles",
+          "Add an employee",
+          "View all employees",
           "Update an employee role",
           "Exit",
         ],
@@ -309,5 +313,4 @@ async function mainMenu() {
     console.error("An error occurred:", error);
   }
 }
-
-mainMenu();
+generateTitle();
