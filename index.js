@@ -1,38 +1,48 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
+const { table } = require("table");
 
 const connection = mysql.createPool({
   host: "localhost",
   user: "computer",
   password: "",
-  database: "employee_db",
+  database: "employment_db",
 });
 
 function viewAllDepartments() {
-  connection.query("SELECT * FROM departments", (err, results) => {
-    if (err) throw err;
-
-    console.table(results);
-    mainMenu();
-  });
+  connection.query(
+    { sql: "SELECT name FROM department", rowsAsArray: true },
+    (err, results) => {
+      if (err) throw err;
+      results.unshift(["Name"]);
+      console.log(table(results));
+      mainMenu();
+    }
+  );
 }
 
 function viewAllRoles() {
-  connection.query("SELECT * FROM roles", (err, results) => {
-    if (err) throw err;
-
-    console.table(results);
-    mainMenu();
-  });
+  connection.query(
+    { sql: "SELECT title, salary FROM roles", rowsAsArray: true },
+    (err, results) => {
+      if (err) throw err;
+      results.unshift(["Title", "Salary"]);
+      console.log(table(results));
+      mainMenu();
+    }
+  );
 }
 
 function viewAllEmployees() {
-  connection.query("SELECT * FROM employees", (err, results) => {
-    if (err) throw err;
+  connection.query(
+    { sql: "SELECT * FROM employee", rowsAsArray: true },
+    (err, results) => {
+      if (err) throw err;
 
-    console.table(results);
-    mainMenu();
-  });
+      console.log(table(results));
+      mainMenu();
+    }
+  );
 }
 
 function addDepartment() {
@@ -46,7 +56,7 @@ function addDepartment() {
     ])
     .then((answers) => {
       connection.query(
-        "INSERT INTO departments SET ?",
+        "INSERT INTO department SET ?",
         { name: answers.departmentName },
         (err) => {
           if (err) throw err;
@@ -59,7 +69,7 @@ function addDepartment() {
 }
 
 function addRole() {
-  connection.query("SELECT * FROM departments", (err, departments) => {
+  connection.query("SELECT * FROM department", (err, department) => {
     if (err) throw err;
     inquirer
       .prompt([
@@ -83,7 +93,7 @@ function addRole() {
           type: "list",
           name: "departmentId",
           message: "Select the department for the role:",
-          choices: departments.map((department) => ({
+          choices: department.map((department) => ({
             name: department.name,
             value: department.id,
           })),
@@ -111,7 +121,7 @@ function addRole() {
 function addEmployee() {
   connection.query("SELECT * FROM roles", (err, roles) => {
     if (err) throw err;
-    connection.query("SELECT * FROM employee", (err, employees) => {
+    connection.query("SELECT * FROM employee", (err, employee) => {
       if (err) throw err;
       inquirer
         .prompt([
@@ -140,7 +150,7 @@ function addEmployee() {
             message: "Select the manager for the employee:",
             choices: [
               { name: "None", value: null },
-              ...employees.map((employee) => ({
+              ...employee.map((employee) => ({
                 name: `${employee.first_name} ${employee.last_name}`,
                 value: employee.id,
               })),
@@ -169,7 +179,7 @@ function addEmployee() {
 }
 
 function updateEmployeeRole() {
-  connection.query("SELECT * FROM employees", (err, employees) => {
+  connection.query("SELECT * FROM employee", (err, employee) => {
     if (err) throw err;
     inquirer
       .prompt([
@@ -177,7 +187,7 @@ function updateEmployeeRole() {
           type: "list",
           name: "employeeId",
           message: "Select the employee to update:",
-          choices: employees.map((employee) => ({
+          choices: employee.map((employee) => ({
             name: `${employee.first_name} ${employee.last_name}`,
             value: employee.id,
           })),
@@ -200,7 +210,7 @@ function updateEmployeeRole() {
             ])
             .then((roleAnswer) => {
               connection.query(
-                "UPDATE employees SET role_id = ? WHERE id = ?",
+                "UPDATE employee SET role_id = ? WHERE id = ?",
                 [roleAnswer.roleId, employeeAnswer.employeeId],
                 (err) => {
                   if (err) throw err;

@@ -18,6 +18,7 @@
   "homepage": "https://github.com/Krich2022/macro-manager#readme",
   "dependencies": {
     "inquirer": "^8.2.0",
-    "mysql2": "^2.3.0"
+    "mysql2": "^2.3.0",
+    "table": "^6.8.1"
   }
 }
