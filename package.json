@@ -1,0 +1,23 @@
+{
+  "name": "macro-manager",
+  "version": "1.0.0",
+  "description": "For all of your employment management needs on a macro scale for your company!",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Krich2022/macro-manager.git"
+  },
+  "author": "Keston Rich",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Krich2022/macro-manager/issues"
+  },
+  "homepage": "https://github.com/Krich2022/macro-manager#readme",
+  "dependencies": {
+    "inquirer": "^8.2.0",
+    "mysql2": "^2.3.0"
+  }
+}
